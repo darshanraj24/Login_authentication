@@ -88,5 +88,19 @@ button {
   position: absolute;
   top: 100px;
   left: 250px;
+  right: 30px;
   max-width: 100%;
+}
+
+@media (max-width:768px) {
+  .Sidebar{
+    width: 100px;
+  }
+  .Homecontent {
+    position: absolute;
+    top: 100px;
+    left: 150px;
+    right: 20px;
+    max-width: 100%;
+  }
 }
