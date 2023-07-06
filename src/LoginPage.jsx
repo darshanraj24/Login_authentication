@@ -3,29 +3,35 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const LoginPage = ({ handleLogin }) => {
     const navigate = useNavigate();
-    const [username, setUsername] = useState('');
+    const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!userName) {
+            setError('Please enter username');
+            setSuccess('');
+            return;
+        }
+
         const response = await fetch('https://jsonplaceholder.typicode.com/users');
-    
+
         if (response.ok) {
             const users = await response.json();
             const authenticatedUser = users.find(
-                (user) => user.email === username
+                (user) => user.email === userName
             );
-    
+
             if (!authenticatedUser) {
                 setError('No user found');
                 setSuccess('');
-    
+
             } else if (authenticatedUser.username !== password) {
                 setError('Invalid password');
                 setSuccess('');
-    
+
             } else {
                 setError('');
                 setSuccess('Login successful');
@@ -39,7 +45,7 @@ const LoginPage = ({ handleLogin }) => {
             setSuccess('');
         }
     };
-    
+
 
     return (
         <div className='container'>
@@ -52,8 +58,8 @@ const LoginPage = ({ handleLogin }) => {
                             <input
                                 type="email"
                                 placeholder="Enter the email"
-                                required
-                                value={username}
+                                // required
+                                value={userName}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
@@ -62,7 +68,7 @@ const LoginPage = ({ handleLogin }) => {
                             <input
                                 type="password"
                                 placeholder="Enter the password"
-                                required
+                                // required
                                 value={password}
                                 minLength={3}
                                 onChange={(e) => setPassword(e.target.value)}
