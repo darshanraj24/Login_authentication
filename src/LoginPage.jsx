@@ -11,29 +11,35 @@ const LoginPage = ({ handleLogin }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const response = await fetch('https://jsonplaceholder.typicode.com/users');
-
+    
         if (response.ok) {
             const users = await response.json();
             const authenticatedUser = users.find(
-                (user) => user.username === password && user.email === username
+                (user) => user.email === username
             );
-
-            if (authenticatedUser) {
-                setError('')
+    
+            if (!authenticatedUser) {
+                setError('No user found');
+                setSuccess('');
+    
+            } else if (authenticatedUser.username !== password) {
+                setError('Invalid password');
+                setSuccess('');
+    
+            } else {
+                setError('');
                 setSuccess('Login successful');
                 handleLogin();
                 setTimeout(() => {
                     navigate('/');
                 }, 1000);
-
-            } else {
-                setError('Invalid username or password');
-
             }
         } else {
             setError('Login failed');
+            setSuccess('');
         }
     };
+    
 
     return (
         <div className='container'>
